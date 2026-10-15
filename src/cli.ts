@@ -12174,6 +12174,7 @@ async function cmdSend(rest: string[]): Promise<void> {
         recipientOpenIds: footerRecipients,
         usage: usageSnapshot,
         locale: localeForBot(appId),
+        hideSentTo: getBot(appId)?.config.hideSentToFooter === true,
       });
       // Footer line (brand 个性签名 + 发送给) and the optional 🔊 语音总结 button
       // share ONE row: footer text on the left (weighted, fills), button pinned

@@ -18989,6 +18989,7 @@ function deliverFinalOutput(
             executionDurationMs,
             waitingDurationMs,
             ...(feedback ? { feedback } : {}),
+            ...(getBot(ds.larkAppId).config.hideSentToFooter ? { hideSentTo: true } : {}),
           })
         : buildCanonicalFinalReplyCard({
             markdown: repairReplyMarkdown(deliveredAssistantText),
@@ -19001,6 +19002,7 @@ function deliverFinalOutput(
             usage: cardUsage,
             executionDurationMs,
             waitingDurationMs,
+            ...(getBot(ds.larkAppId).config.hideSentToFooter ? { hideSentTo: true } : {}),
           });
       if (!managedReceiver) {
         cardJson = attachOncallGroupButton(cardJson, getBot(ds.larkAppId).config.oncallGroup, ds.chatId, ds.chatType);
