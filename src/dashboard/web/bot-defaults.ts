@@ -141,6 +141,7 @@ export type BotDefaultsRow = {
   hiddenStreamingCardButtons?: StreamingCardButtonId[];
   pinStreamingCard?: boolean;
   silentTurnReactions?: boolean;
+  hideSentToFooter?: boolean;
   codexAppCleanInput?: boolean;
   codexBrowser?: boolean;
   writableTerminalLinkInCard?: boolean;

@@ -589,6 +589,7 @@ function patchCardPrefsFromBody(bot: BotDefaultsRow, body: any): BotDefaultsRow 
     hiddenStreamingCardButtons: body.hiddenStreamingCardButtons,
     pinStreamingCard: body.pinStreamingCard,
     silentTurnReactions: body.silentTurnReactions,
+    hideSentToFooter: body.hideSentToFooter,
     codexAppCleanInput: body.codexAppCleanInput,
     codexBrowser: body.codexBrowser,
     writableTerminalLinkInCard: body.writableTerminalLinkInCard,
@@ -4298,6 +4299,7 @@ export function CardBehaviorSection(props: { bot: BotDefaultsRow; putCardPref(pa
   const [hiddenButtons, setHiddenButtons] = useState<StreamingCardButtonId[]>(bot.hiddenStreamingCardButtons ?? []);
   const [pinStreamingCard, setPinStreamingCard] = useState(bot.pinStreamingCard === true);
   const [silentReactions, setSilentReactions] = useState(bot.silentTurnReactions === true);
+  const [hideSentTo, setHideSentTo] = useState(bot.hideSentToFooter === true);
   const [writableLink, setWritableLink] = useState(bot.writableTerminalLinkInCard === true);
   const [privateCard, setPrivateCard] = useState(bot.privateCard === true);
   const [cotEnabled, setCotEnabled] = useState(bot.cotEnabled !== false);
@@ -4311,10 +4313,11 @@ export function CardBehaviorSection(props: { bot: BotDefaultsRow; putCardPref(pa
     setHiddenButtons(bot.hiddenStreamingCardButtons ?? []);
     setPinStreamingCard(bot.pinStreamingCard === true);
     setSilentReactions(bot.silentTurnReactions === true);
+    setHideSentTo(bot.hideSentToFooter === true);
     setWritableLink(bot.writableTerminalLinkInCard === true);
     setPrivateCard(bot.privateCard === true);
     setCotEnabled(bot.cotEnabled !== false);
-  }, [bot.replyCardMode, bot.disableStreamingCard, bot.hiddenStreamingCardButtons, bot.pinStreamingCard, bot.privateCard, bot.cotEnabled, bot.usageDisplay, bot.silentTurnReactions, bot.writableTerminalLinkInCard]);
+  }, [bot.replyCardMode, bot.disableStreamingCard, bot.hiddenStreamingCardButtons, bot.pinStreamingCard, bot.privateCard, bot.cotEnabled, bot.usageDisplay, bot.silentTurnReactions, bot.hideSentToFooter, bot.writableTerminalLinkInCard]);
 
   async function savePatch(patch: CardPrefPatch, key: string, rollback?: () => void): Promise<void> {
     await saveBotField({
@@ -4412,6 +4415,19 @@ export function CardBehaviorSection(props: { bot: BotDefaultsRow; putCardPref(pa
             />
             <p role="status" data-card-pref-moot className="bd-card-mode-note">{tr('botDefaults.manualCardHint')}</p>
           </div>
+          <ToggleRow
+            checked={hideSentTo}
+            disabled={busy !== null}
+            dataAction="toggle-hide-sent-to"
+            title={tr('botDefaults.hideSentToFooter')}
+            description={tr('botDefaults.hideSentToFooterDescription')}
+            help={tr('botDefaults.hideSentToFooterHelp')}
+            onChange={checked => {
+              const previous = hideSentTo;
+              setHideSentTo(checked);
+              void savePatch({ hideSentToFooter: checked }, 'hideSentTo', () => setHideSentTo(previous));
+            }}
+          />
           <ToggleRow
             checked={cotEnabled}
             disabled={busy !== null}
